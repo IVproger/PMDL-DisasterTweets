@@ -18,7 +18,7 @@ The dataset contains Twitter messages that are labeled as either "disaster-relat
 
 1. Clone the repository:
     ```bash
-    git clone [https://github.com/yourusername/your-repo-name.git](https://github.com/IVproger/PMDL-DisasterTweets.git)
+    git clone https://github.com/IVproger/PMDL-DisasterTweets.git
     cd PMDL-DisasterTweets
     ```
 
