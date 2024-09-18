@@ -39,7 +39,7 @@ The dataset contains Twitter messages that are labeled as either "disaster-relat
    $ poetry install --with dev
    ```
 
-4. Download the dataset from the Kaggle competition and place it in the `data/` folder:
+4. Download the dataset from the Kaggle competition and place it in the `data/raw` folder:
     - Sign in to Kaggle and download the dataset from [this link](https://www.kaggle.com/competitions/nlp-getting-started/data).
 
 ## Approach and Methodology
