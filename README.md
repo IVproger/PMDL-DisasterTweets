@@ -22,9 +22,7 @@ The dataset contains Twitter messages that are labeled as either "disaster-relat
     cd PMDL-DisasterTweets
     ```
 
-2. Install dependencies:
-   Install Python 3.11
-   Install Poetry 1.8.3
+2. Install dependencies: Python 3.11 and Poetry 1.8.3
 
    Configure `.venv` location
    ```bash
