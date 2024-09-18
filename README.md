@@ -50,8 +50,9 @@ The dataset contains Twitter messages that are labeled as either "disaster-relat
 
 ## Tools
 
-- **Kaggle Notebooks:** For easy collaboration and no-setup environment.
-- **Libraries:** We will use common Python libraries such as `pandas`, `scikit-learn`, `nltk`, and `tensorflow` for building our models.
+- **Kaggle Notebooks:**
+- **GitHub repos:**
+- **Libraries:** 
 
 ## Contributors
 
