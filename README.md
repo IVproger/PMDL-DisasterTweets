@@ -58,7 +58,7 @@ The dataset contains Twitter messages that are labeled as either "disaster-relat
 
 - Ivan Golov
 - Alexey Shulmin
-- Ilnaz :)
+- Ilnaz Magizov
 
 ## License
 
