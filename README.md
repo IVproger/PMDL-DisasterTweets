@@ -23,11 +23,30 @@ The dataset contains Twitter messages that are labeled as either "disaster-relat
     ```
 
 2. Install dependencies:
+   Install Python 3.11
+   Install Poetry 1.8.3
+
+   Configure `.venv` location
+   ```bash
+   $ poetry config virtualenvs.in-project true
+   ```
+   
+   Create `.venv` with Python 3.11 (make sure you have it installed)
+   ```bash
+   $ poetry env use python3.11
+   ```
+   
+   Install dependencies
+   ```bash
+   $ poetry install --with dev
+   ```
+
+
     ```bash
     pip install -Ur requirements.txt
     ```
 
-3. Download the dataset from the Kaggle competition and place it in the `data/` folder:
+4. Download the dataset from the Kaggle competition and place it in the `data/` folder:
     - Sign in to Kaggle and download the dataset from [this link](https://www.kaggle.com/competitions/nlp-getting-started/data).
 
 ## Approach and Methodology
