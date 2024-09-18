@@ -36,7 +36,7 @@ The dataset contains Twitter messages that are labeled as either "disaster-relat
    
    Install dependencies
    ```bash
-   $ poetry install --with dev
+   $ poetry install 
    ```
 
 4. Download the dataset from the Kaggle competition and place it in the `data/raw` folder:
