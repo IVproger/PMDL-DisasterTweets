@@ -18,13 +18,13 @@ The dataset contains Twitter messages that are labeled as either "disaster-relat
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/your-repo-name.git
-    cd your-repo-name
+    git clone [https://github.com/yourusername/your-repo-name.git](https://github.com/IVproger/PMDL-DisasterTweets.git)
+    cd PMDL-DisasterTweets
     ```
 
 2. Install dependencies:
     ```bash
-    pip install -r requirements.txt
+    pip install -Ur requirements.txt
     ```
 
 3. Download the dataset from the Kaggle competition and place it in the `data/` folder:
