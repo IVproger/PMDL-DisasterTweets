@@ -49,3 +49,12 @@ Our EDA should focus on:
 - **Week 3-4**: Model development and training. Start by trying various machine learning models like logistic regression, decision trees, and deep learning models like LSTMs or Transformers for NLP tasks.
 - **Week 4-5**: Model evaluation and optimization, focusing on improving accuracy and reducing false positives.
 - **Week 6**: Deployment and real-time testing, possibly integrating your model into a real-time Twitter feed to monitor its performance.
+
+|  Stages |                                          |                                                 |
+|---------|------------------------------------------|-------------------------------------------------|
+|    1    | Business problem and Data Understanding  | Infrastructure plan                             |
+|    2    | Data preparation                         | ETL and data storage                            |
+|    3    | Model arhitecture planning               | Pipline of tranformations and data preparations |
+|    4    | Model Traning                            | Experiment tracking system                      |
+|    5    | Model Evaluation and tunig               | Deployment preparation                          |
+|    6    | Deployment and Monitoring                |                                                 |
