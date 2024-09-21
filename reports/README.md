@@ -44,11 +44,6 @@ Our EDA should focus on:
   - Are there certain users who tend to tweet more real news vs. emotional content?
 
 ### 6. **Future Project Workflow**
-- **Week 1-2**: Data collection and labeling (if you're working with an unlabeled dataset).
-- **Week 2-3**: Exploratory data analysis and feature engineering. This involves cleaning the data, tokenizing the tweets, and generating potential features like tweet length, sentiment, and keyword presence.
-- **Week 3-4**: Model development and training. Start by trying various machine learning models like logistic regression, decision trees, and deep learning models like LSTMs or Transformers for NLP tasks.
-- **Week 4-5**: Model evaluation and optimization, focusing on improving accuracy and reducing false positives.
-- **Week 6**: Deployment and real-time testing, possibly integrating your model into a real-time Twitter feed to monitor its performance.
 
 |  Stages |                                          |                                                 |
 |---------|------------------------------------------|-------------------------------------------------|
