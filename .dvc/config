@@ -1,4 +1,4 @@
 [core]
     remote = localstore
 ['remote "localstore"']
-    url = /datastore
+    url = /Users/ivangolov/Desktop/Innopolis course 3.1/PMDL/PMDL project/PMDL-DisasterTweets/datastore
