@@ -1,7 +1,9 @@
 data:
   dataset_name: Natural Language Processing with Disaster Tweets
-  sample_train_path: data/sample/train.csv
-  sample_train_version_path: data/sample/train.csv.dvc
-  sample_test_path: data/sample/test.csv
-  sample_test_version_path: data/sample/test.csv.dvc
-  sample_version: None
+  sample_train_path: data/samples/train.csv
+  sample_train_version_path: data/samples/train.csv.dvc
+  sample_test_path: data/samples/test.csv
+  sample_test_version_path: data/samples/test.csv.dvc
+  artifact_name: features_target
+  sample_version: v1.0
+  version_number: 1
