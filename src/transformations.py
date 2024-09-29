@@ -1,16 +1,11 @@
-from sklearn.pipeline import FunctionTransformer, Pipeline
 from sklearn.base import BaseEstimator, TransformerMixin
 from nltk.stem.snowball import SnowballStemmer
-from nltk.tokenize import word_tokenize
-from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
 import pandas as pd
 import numpy as np
 import hashlib
 import demoji
 import nltk
-import sys
-import os
 import re
 
 nltk.download('punkt')
@@ -19,7 +14,6 @@ stemmer = SnowballStemmer('english')
 stopword = stopwords.words('english')
 demoji.download_codes()
 
-sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '..')))
 
 class feature_extractor(BaseEstimator, TransformerMixin):
     def __init__(self, features: list[str]):
