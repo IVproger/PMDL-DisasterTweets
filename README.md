@@ -1,6 +1,6 @@
 # NLP Disaster Tweets Classification Project
 
-Welcome to the repository for our group project in the PMDL subject at Innopolis University. This project is based on a Kaggle competition aimed at building an NLP model to classify Twitter messages sent during emergency situations.
+Welcome to the repository for our group project in the PMLDL subject at Innopolis University. This project is based on a Kaggle competition aimed at building an NLP model to classify Twitter messages sent during emergency situations.
 
 ## Project Overview
 
