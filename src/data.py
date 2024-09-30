@@ -1,7 +1,21 @@
 import zenml
 from zenml.client import Client
 import pandas as pd
+from omegaconf import OmegaConf
+import os
 
+def read_datastore(train=True) -> tuple[pd.DataFrame, str]:
+    """
+    Read the sample data.
+    """
+    cfg = OmegaConf.load("../configs/data_description.yaml")
+    version = open("../configs/data_version.txt", "r").read().strip()
+    
+    data_path = os.path.join('..', cfg.data.sample_train_path if train else cfg.data.sample_test_path)
+    data = pd.read_csv(data_path)
+    
+    return data, version
+    
 
 def load_features(X: pd.DataFrame, y: pd.DataFrame, version: str) -> None:
     """

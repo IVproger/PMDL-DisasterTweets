@@ -40,7 +40,6 @@ class feature_extractor(BaseEstimator, TransformerMixin):
 
 
 # --- Clear Columns Transformer ---
-
 class clear_columns(BaseEstimator, TransformerMixin):
     """
     Cleans the specified text columns in a DataFrame by applying several cleaning steps:
@@ -72,6 +71,9 @@ class clear_columns(BaseEstimator, TransformerMixin):
         if pd.isnull(text):
             return text  # Return if null value
 
+        # Convert to string if not already
+        text = str(text)
+
         # Remove non-alphabetic characters
         text = re.sub(r'[^a-zA-Z\s]', '', text)
         # Remove short words (1-2 characters)
@@ -93,7 +95,6 @@ class clear_columns(BaseEstimator, TransformerMixin):
 
 
 # --- Merge Columns Transformer ---
-
 class merge_columns(BaseEstimator, TransformerMixin):
     """
     Merges multiple text columns into one, with an option to drop the original columns.
@@ -111,17 +112,17 @@ class merge_columns(BaseEstimator, TransformerMixin):
     def fit(self, X, y=None):
         return self  # No fitting required
 
-    def transform(self, data):
+    def transform(self, X):
         # Merge the columns into one
-        data[self.new_feature_name] = data[self.features].apply(self.merge_text, axis=1)
+        X[self.new_feature_name] = X[self.features].apply(self.merge_text, axis=1)
 
         # Drop original columns if requested, except if the new feature name matches one of the originals
         if self.drop_original:
             features_to_drop = [f for f in self.features if f != self.new_feature_name]
             if features_to_drop:
-                data = data.drop(columns=features_to_drop)
+                X = X.drop(columns=features_to_drop)
 
-        return data
+        return X
 
     def merge_text(self, row):
         """Merges the content of the specified columns into a single string."""
