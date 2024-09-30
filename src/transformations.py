@@ -2,10 +2,13 @@ from sklearn.pipeline import Pipeline
 from sklearn.base import BaseEstimator, TransformerMixin
 from nltk.stem.snowball import SnowballStemmer
 from nltk.corpus import stopwords
+from sentence_transformers import SentenceTransformer
 import pandas as pd
 import re
 import demoji
 import nltk
+
+# TODO: the resulted merged text has a white space at the beginning, need to remove it
 
 # --- Download resources only once at the top-level ---
 
@@ -127,3 +130,23 @@ class merge_columns(BaseEstimator, TransformerMixin):
     def merge_text(self, row):
         """Merges the content of the specified columns into a single string."""
         return ' '.join([str(row[feature]) for feature in self.features if pd.notnull(row[feature])])
+
+def generate_embeddings(embeder_path: str, X: pd.DataFrame, column_name: str):
+    """
+    Generates embeddings for a specified column in a DataFrame using a SentenceTransformer model.
+
+    Args:
+        embeder_path (str): Path to the SentenceTransformer model.
+        X (pd.DataFrame): The input DataFrame containing the text data.
+        column_name (str): The name of the column to generate embeddings for.
+
+    Returns:
+        np.ndarray: The generated embeddings for the specified column.
+    """
+    model = SentenceTransformer(embeder_path)
+    
+    return model.encode(X[column_name].values.tolist())
+    
+    
+    
+    
