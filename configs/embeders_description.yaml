@@ -1,0 +1,2 @@
+production:
+  embeder_path: models/embedders/all-MiniLM-L6-v2

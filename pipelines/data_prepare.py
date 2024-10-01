@@ -4,6 +4,7 @@ import numpy as np
 from zenml import pipeline, step, ArtifactConfig
 from src.transformations import feature_extractor, clear_columns, merge_columns, generate_embeddings
 from src.data import read_datastore, load_features, fetch_features
+from src.utils import init_hydra
 from sklearn.pipeline import Pipeline
 
 @step(enable_cache=False)
@@ -86,7 +87,8 @@ def load(
 def prepare_data_pipeline():
     df, version = extract()
     X, y = transform(df)
-    X = obtain_embeddings(X=X, embeder_path='models/embedders/all-MiniLM-L6-v2',column_name='merged_text')
+    cfg = init_hydra('embeders_description')
+    X = obtain_embeddings(X=X, embeder_path=cfg.production.embeder_path,column_name='merged_text')
     X, y = load(X, y, version)
 
 
