@@ -3,6 +3,7 @@ from zenml.client import Client
 import pandas as pd
 from omegaconf import OmegaConf
 import os
+import numpy as np
 
 def read_datastore(train=True) -> tuple[pd.DataFrame, str]:
     """
@@ -17,11 +18,11 @@ def read_datastore(train=True) -> tuple[pd.DataFrame, str]:
     return data, version
     
 
-def load_features(X: pd.DataFrame, y: pd.DataFrame, version: str) -> None:
+def load_features(X: np.array, y: pd.DataFrame, version: str) -> None:
     """
-    Save the features and target as artifact.
+    Save the features_target and target as artifact.
     """
-    zenml.save_artifact(data=[X,y], name="features", tags=[version])
+    zenml.save_artifact(data=[X,y], name="features_target", tags=[version])
 
 def fetch_features(name: str, version: str) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
