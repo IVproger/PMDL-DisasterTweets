@@ -5,26 +5,29 @@ from omegaconf import OmegaConf
 import os
 import numpy as np
 
-def read_datastore(train=True) -> tuple[pd.DataFrame, str]:
+def read_datastore() -> tuple[pd.DataFrame, pd.DataFrame, str]:
     """
     Read the sample data.
     """
     cfg = OmegaConf.load("configs/data_description.yaml")
     version = open("configs/data_version.txt", "r").read().strip()
     
-    data_path = os.path.join('', cfg.data.sample_train_path if train else cfg.data.sample_test_path)
-    data = pd.read_csv(data_path)
+    train_path = cfg.data.sample_train_path
+    test_path = cfg.data.sample_test_path
+
+    train_data = pd.read_csv(train_path)
+    test_data = pd.read_csv(test_path)
     
-    return data, version
+    return train_data, test_data, version
     
 
-def load_features(X: np.ndarray, y: pd.Series, version: str) -> None:
+def load_features(X_train: np.ndarray, y_train: pd.Series, X_test: np.ndarray, version: str) -> None:
     """
     Save the features_target and target as artifact.
     """
-    zenml.save_artifact(data=[X,y], name="features_target", tags=[version])
+    zenml.save_artifact(data=[X_train, y_train, X_test], name="features_target_train_test", tags=[version])
 
-def fetch_features(name: str, version: str) -> tuple[pd.DataFrame, pd.DataFrame]:
+def fetch_features(name: str, version: str) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
     Fetch the features and target from the artifact store.
 
@@ -44,7 +47,8 @@ def fetch_features(name: str, version: str) -> tuple[pd.DataFrame, pd.DataFrame]
     
     # Load the latest version of artifact
     artifact = lst[0].load()
-    X = artifact[0]
-    y = artifact[1]
+    X_train = artifact[0]
+    y_train = artifact[1]
+    X_test = artifact[2]
         
-    return X, y
+    return X_train, y_train, X_test
