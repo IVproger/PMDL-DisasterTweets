@@ -75,20 +75,22 @@ class clear_columns(BaseEstimator, TransformerMixin):
             return text  # Return if null value
 
         # Convert to string if not already
-        text = str(text)
+        text = str(text).lower()
 
-        # Remove non-alphabetic characters
-        text = re.sub(r'[^a-zA-Z\s]', '', text)
-        # Remove short words (1-2 characters)
-        text = re.sub(r'\b\w{1,2}\b', '', text)
         # Remove URLs
         text = re.sub(r'(https|http)?:\/\/(\w|\.|\/|\?|\=|\&|\%|\-)*\b', '', text)
-        # Replace emojis with their textual description
-        text = demoji.replace_with_desc(text)
-        # Remove @mentions and #hashtags
-        text = re.sub(r'[@|#][^\s]+', '', text)
         # Remove HTML tags
         text = re.sub(r'<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});', '', text)
+        # Remove @mentions and #hashtags
+        text = re.sub(r'[@|#][^\s]+', '', text)
+        # Replace emojis with their textual description
+        text = demoji.replace_with_desc(text)
+        # Remove short words (1-2 characters)
+        text = re.sub(r'\b\w{1,2}\b', '', text)
+        # Remove non-alphabetic characters
+        text = re.sub(r'[^a-zA-Z\s]', '', text)
+        # Remove redundant spaces
+        text = re.sub(' +', ' ', text).strip()
 
         # Tokenize, stem, and remove stopwords
         value_list = text.split()
