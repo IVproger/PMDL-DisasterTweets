@@ -113,7 +113,7 @@ def prepare_data_pipeline():
     df_train, df_test, version = extract()
     
     X_train, y_train = transform(df_train)
-    X_test, y_test = transform(df_test,train=False)
+    X_test, _ = transform(df_test,train=False)
     
     cfg = init_hydra('embeders_description')
     X_train = obtain_embeddings(X=X_train, embeder_path=cfg.production.embeder_path,column_name='merged_text')
