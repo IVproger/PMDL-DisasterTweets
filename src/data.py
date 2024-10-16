@@ -2,8 +2,11 @@ import zenml
 from zenml.client import Client
 import pandas as pd
 from omegaconf import OmegaConf
-import os
+from src.transformations import feature_extractor, clear_columns, generate_embeddings
+from src.utils import init_hydra
 import numpy as np
+from sklearn.pipeline import Pipeline
+import os
 
 def read_datastore() -> tuple[pd.DataFrame, pd.DataFrame, str]:
     """
@@ -52,3 +55,30 @@ def fetch_features(name: str, version: str) -> tuple[pd.DataFrame, pd.DataFrame,
     X_test = artifact[2]
         
     return X_train, y_train, X_test
+
+def preprocess_data(X: pd.DataFrame) -> np.ndarray:
+    """
+    Preprocess the data using a pipeline of transformations.
+
+    Args:
+        X (pd.DataFrame): The input DataFrame.
+
+    Returns:
+        pd.DataFrame: The transformed DataFrame.
+    """
+    all_features = X.columns.tolist()
+
+    pipeline = Pipeline([
+        ('extract_features', feature_extractor(features=all_features)),
+        ('clean_columns', clear_columns(features=all_features)),
+    ])
+
+    transformed_df = pipeline.fit_transform(X)
+    
+    cfg = init_hydra('embeders_description')
+    
+    embeddings = generate_embeddings(X=transformed_df, embeder_path=cfg.production.embeder_path,column_name='text')
+    
+    return embeddings
+
+    

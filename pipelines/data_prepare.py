@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from zenml import pipeline, step, ArtifactConfig
 from src.transformations import feature_extractor, clear_columns, merge_columns, generate_embeddings
-from src.data import read_datastore, load_features, fetch_features
+from src.data import read_datastore, load_features
 from src.utils import init_hydra
 from sklearn.pipeline import Pipeline
 

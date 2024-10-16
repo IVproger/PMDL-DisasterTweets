@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import numpy as np
+from src.main import make_prediction_ml
 from src.utils import init_hydra
 import os
 
@@ -26,7 +26,7 @@ def get_model_names() -> ModelsResponse:
         models = []
         for file in model_files:
             if file.endswith(".pkl") and "_" in file:
-                name, version_with_ext = file.rsplit("_", 1)
+                name, version_with_ext = file.rsplit("_v", 1)
                 version = version_with_ext.rsplit(".", 1)[0] 
                 models.append(ModelInfo(model_name=name, version=version))
         return ModelsResponse(models=models)
@@ -34,15 +34,25 @@ def get_model_names() -> ModelsResponse:
         print(f"Error loading models: {e}")
         raise HTTPException(status_code=500, detail="Error loading models")
 
-@app.post("/predict")
+@app.post("/predict_ml")
+async def predict(model_request: ModelRequest):
+    try:
+        prediction = make_prediction_ml(model_request.model_name, model_request.raw_text)
+        print("Prediction completed")
+        print("Prediction:", prediction)
+        return {"prediction": int(prediction)}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.post("/predict_dl")
 async def predict(model_request: ModelRequest):
     pass
 
-@app.get("/models_list/", response_model=ModelsResponse)
+@app.get("/models_list", response_model=ModelsResponse)
 async def get_models():
     models = get_model_names()
     return models
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
