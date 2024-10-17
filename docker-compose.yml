@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  fastapi-app:
+    build:
+      context: .
+      dockerfile: deployment/api.Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+    volumes:
+      - ./src:/app/src
+      - ./models:/app/models
+      - ./configs:/app/configs
+    environment:
+      - PYTHONPATH=/app/src
+    command: bash -c "python3 app.py"
+    healthcheck:
+      test: ["CMD", "python3", "deployment/healthcheck.py"]
+      interval: 60s
+      timeout: 5s
+      retries: 10
+
+  gradio-app:
+    build:
+      context: ./deployment
+      dockerfile: gradio.Dockerfile
+    ports:
+      - "7860:7860"
+    networks:
+      - app-network
+    volumes:
+      - ./deployment:/app
+    depends_on:
+      fastapi-app:
+        condition: service_healthy
+    command: bash -c "python3 gradio_app.py"
+
+networks:
+  app-network:
+    driver: bridge

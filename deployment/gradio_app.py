@@ -2,7 +2,7 @@ import gradio as gr
 import requests
 
 # Define the API URL
-API_URL = "http://0.0.0.0:8000"
+API_URL = "http://fastapi-app:8000"
 
 # Example inputs for the Gradio interface
 EXAMPLES = [
@@ -53,11 +53,22 @@ def make_prediction(model_name, raw_text):
             return "Error making prediction"
 
 # Create the Gradio interface
+def update_model_choices():
+    return gr.Dropdown(choices=list_models())
+
 with gr.Blocks() as demo:
+    # Step 1: Create the dropdown without choices
     model_dropdown = gr.Dropdown(label="Select Model", choices=list_models())
+    # Button to trigger the update of the dropdown choices
+    # update_button = gr.Button("Update Models List")
+    
     input_text = gr.Textbox(label="Input Text")
     predict_button = gr.Button("Make Prediction")
+    
     output_text = gr.Textbox(label="Prediction", interactive=False)
+
+    # Attach the event handler to the update button
+    # update_button.click(fn=update_model_choices, inputs=[], outputs=model_dropdown)
 
     # Define the click event for the prediction button
     predict_button.click(make_prediction, inputs=[model_dropdown, input_text], outputs=output_text)

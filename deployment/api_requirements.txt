@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pydantic
+hydra-core
+pandas
+zenml
+scikit-learn
+nltk
+sentence_transformers
+demoji
