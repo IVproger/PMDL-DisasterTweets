@@ -53,8 +53,6 @@ def transform(
 
         # Create the pipeline
         transformation_pipeline = Pipeline([
-            ('extract_features', feature_extractor(features=all_features)),
-            ('clean_columns', clear_columns(features=all_features)),
             ('merge_columns', merge_columns(features=all_features, new_feature_name=new_feature_name)),
         ])
         
@@ -70,8 +68,6 @@ def transform(
 
         # Create the pipeline
         transformation_pipeline = Pipeline([
-            ('extract_features', feature_extractor(features=all_features)),
-            ('clean_columns', clear_columns(features=all_features)),
             ('merge_columns', merge_columns(features=all_features, new_feature_name=new_feature_name)),
         ])
         
@@ -104,7 +100,7 @@ def load(
     """
     Load the features and target as artifact.
     """
-    load_features(X_train, y_train, X_test, version=version)
+    load_features(X_train, y_train, X_test, version=version,name="features_target_train_test_not_transform")
     print("Loaded into features store", version)
     return X_train, y_train, X_test
 

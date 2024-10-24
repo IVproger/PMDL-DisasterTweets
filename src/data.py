@@ -24,11 +24,11 @@ def read_datastore() -> tuple[pd.DataFrame, pd.DataFrame, str]:
     return train_data, test_data, version
     
 
-def load_features(X_train: np.ndarray, y_train: pd.Series, X_test: np.ndarray, version: str) -> None:
+def load_features(X_train: np.ndarray, y_train: pd.Series, X_test: np.ndarray, version: str, name="features_target_train_test") -> None:
     """
     Save the features_target and target as artifact.
     """
-    zenml.save_artifact(data=[X_train, y_train, X_test], name="features_target_train_test", tags=[version])
+    zenml.save_artifact(data=[X_train, y_train, X_test], name=name, tags=[version])
 
 def fetch_features(name: str, version: str) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
