@@ -8,27 +8,21 @@ app = FastAPI()
 
 class ModelRequest(BaseModel):
     model_name: str
-    version: str
+    version: int
     raw_text: str
     
 class ModelInfo(BaseModel):
     model_name: str
-    version: str
+    version: int
 class ModelsResponse(BaseModel):
     models: list[ModelInfo]
     
 def get_model_names() -> ModelsResponse:
     try:
         cfg = init_hydra("models_description.yaml")
-        print(cfg)
-        models_dir = cfg.production.models_path
-        model_files = os.listdir(models_dir)
         models = []
-        for file in model_files:
-            if file.endswith(".pkl") and "_" in file:
-                name, version_with_ext = file.rsplit("_v", 1)
-                version = version_with_ext.rsplit(".", 1)[0] 
-                models.append(ModelInfo(model_name=name, version=version))
+        for model in cfg['production']['models']:
+            models.append(ModelInfo(model_name=model['name'], version=model['version']))
         return ModelsResponse(models=models)
     except Exception as e:
         print(f"Error loading models: {e}")
@@ -37,11 +31,12 @@ def get_model_names() -> ModelsResponse:
 @app.post("/predict_ml")
 async def predict(model_request: ModelRequest):
     try:
-        prediction = make_prediction_ml(model_request.model_name, model_request.raw_text)
+        prediction = make_prediction_ml(model_request.model_name+'_v'+str(model_request.version)+'.pkl', model_request.raw_text)
         print("Prediction completed")
         print("Prediction:", prediction)
         return {"prediction": int(prediction)}
     except Exception as e:
+        print(f"Error during prediction: {e}")
         raise HTTPException(status_code=500, detail=str(e))
     
 @app.post("/predict_dl")

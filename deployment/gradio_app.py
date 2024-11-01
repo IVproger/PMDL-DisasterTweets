@@ -18,24 +18,28 @@ EXAMPLES = [
     ["I'm afraid that the tornado is coming to our area..."]
 ]
 
+# Store models versions
+version_map = {}
+
 # Function to list available models from the API
 def list_models():
     response = requests.get(f"{API_URL}/models_list/")
     if response.status_code == 200:
         models = response.json()["models"]
-        model_names = [f"{model['model_name']}_v{model['version']}.pkl" for model in models]
+        model_names = []
+        for model in models:
+            model_names.append(model['model_name'])
+            version_map[model['model_name']] = model['version']
         return model_names
     else:
         return []
 
 # Function to make a prediction using the selected model and input text
 def make_prediction(model_name, raw_text):
-    _, version = model_name.rsplit("_v", 1)
-    version = version.rsplit(".", 1)[0]
     flag = model_name[:2]
     payload = {
         "model_name": model_name,
-        "version": version,
+        "version": version_map[model_name],
         "raw_text": raw_text
     }
     if flag == "DL":
@@ -57,18 +61,13 @@ def update_model_choices():
     return gr.Dropdown(choices=list_models())
 
 with gr.Blocks() as demo:
-    # Step 1: Create the dropdown without choices
+    # Create the dropdown without choices
     model_dropdown = gr.Dropdown(label="Select Model", choices=list_models())
-    # Button to trigger the update of the dropdown choices
-    # update_button = gr.Button("Update Models List")
     
     input_text = gr.Textbox(label="Input Text")
     predict_button = gr.Button("Make Prediction")
     
     output_text = gr.Textbox(label="Prediction", interactive=False)
-
-    # Attach the event handler to the update button
-    # update_button.click(fn=update_model_choices, inputs=[], outputs=model_dropdown)
 
     # Define the click event for the prediction button
     predict_button.click(make_prediction, inputs=[model_dropdown, input_text], outputs=output_text)

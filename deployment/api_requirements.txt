@@ -8,3 +8,4 @@ scikit-learn
 nltk
 sentence_transformers
 demoji
+catboost

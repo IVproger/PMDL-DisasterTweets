@@ -1,2 +1,13 @@
 production:
   models_path: models/champions
+  models:
+    - name: Catboost
+      version: 0
+    - name: BernoulliNB
+      version: 0
+    - name: LogisticRegression
+      version: 0
+    - name: RandomForestClassifier
+      version: 0
+    - name: SVC
+      version: 0
