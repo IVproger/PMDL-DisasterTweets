@@ -2,6 +2,8 @@ from src.utils import init_hydra
 from src.data import preprocess_data
 import pandas as pd
 import os
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
 
 def make_prediction_ml(model_name: str, text: str) -> str:
     """
@@ -45,4 +47,31 @@ def make_prediction_dl(model_name: str, text: str) -> str:
     Returns:
         str: The prediction result ("Real Disaster" or "Not").
     """
-    pass
+    
+    # Make the pd.DataFrame from the user input
+    user_df = pd.DataFrame([text], columns=['text'])
+    
+    # Load the model configuration
+    cfg = init_hydra("models_description.yaml")
+    models_dir = cfg.production.models_path
+    model_path = os.path.join(models_dir, model_name)
+    
+    tokenizer = AutoTokenizer.from_pretrained(model_path + '/tokenizer')
+    model = AutoModelForSequenceClassification.from_pretrained(model_path + '/model')
+    
+    inputs = tokenizer(user_df['text'].tolist(), return_tensors='pt', padding=True, truncation=True)
+
+    # Get model predictions
+    with torch.no_grad():
+        outputs = model(**inputs)
+
+    # Process the model's output to get predictions
+    logits = outputs.logits
+    predictions = torch.argmax(logits, dim=-1)
+
+    # Convert predictions to a list
+    prediction_list = predictions.tolist()
+    
+    return prediction_list[0]
+    
+    

@@ -1,8 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from src.main import make_prediction_ml
+from src.main import make_prediction_ml, make_prediction_dl
 from src.utils import init_hydra
-import os
 
 app = FastAPI()
 
@@ -14,6 +13,7 @@ class ModelRequest(BaseModel):
 class ModelInfo(BaseModel):
     model_name: str
     version: int
+    type: str
 class ModelsResponse(BaseModel):
     models: list[ModelInfo]
     
@@ -22,7 +22,7 @@ def get_model_names() -> ModelsResponse:
         cfg = init_hydra("models_description.yaml")
         models = []
         for model in cfg['production']['models']:
-            models.append(ModelInfo(model_name=model['name'], version=model['version']))
+            models.append(ModelInfo(model_name=model['name'], version=model['version'],type=model['type']))
         return ModelsResponse(models=models)
     except Exception as e:
         print(f"Error loading models: {e}")
@@ -41,7 +41,14 @@ async def predict(model_request: ModelRequest):
     
 @app.post("/predict_dl")
 async def predict(model_request: ModelRequest):
-    pass
+    try:
+        prediction = make_prediction_dl(model_request.model_name, model_request.raw_text)
+        print("Prediction completed")
+        print("Prediction:", prediction)
+        return {"prediction": int(prediction)}
+    except Exception as e:
+        print(f"Error during prediction: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/models_list", response_model=ModelsResponse)
 async def get_models():

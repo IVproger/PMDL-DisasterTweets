@@ -3,11 +3,19 @@ production:
   models:
     - name: Catboost
       version: 0
+      type: ml
     - name: BernoulliNB
       version: 0
+      type: ml
     - name: LogisticRegression
       version: 0
+      type: ml
     - name: RandomForestClassifier
       version: 0
+      type: ml
     - name: SVC
       version: 0
+      type: ml
+    - name: Deberta-v3-large
+      version: 3
+      type: dl

@@ -29,32 +29,35 @@ def list_models():
         model_names = []
         for model in models:
             model_names.append(model['model_name'])
-            version_map[model['model_name']] = model['version']
+            version_map[model['model_name']] = {
+                "version": model['version'],
+                "type": model['type']
+            }
         return model_names
     else:
         return []
 
 # Function to make a prediction using the selected model and input text
 def make_prediction(model_name, raw_text):
-    flag = model_name[:2]
+    model_info = version_map[model_name]
     payload = {
         "model_name": model_name,
-        "version": version_map[model_name],
+        "version": model_info["version"],
         "raw_text": raw_text
     }
-    if flag == "DL":
-        # TODO: Implement the DL prediction
-        pass
+    if model_info["type"] == "dl":
+        response = requests.post(f"{API_URL}/predict_dl", json=payload)
     else:
         response = requests.post(f"{API_URL}/predict_ml", json=payload)
-        if response.status_code == 200:
-            prediction = response.json()["prediction"]
-            if prediction == 0:
-                return "Not a Disaster"
-            else:
-                return "Real Disaster"
+    
+    if response.status_code == 200:
+        prediction = response.json()["prediction"]
+        if prediction == 0:
+            return "Not a Disaster"
         else:
-            return "Error making prediction"
+            return "Real Disaster"
+    else:
+        return "Error making prediction"
 
 # Create the Gradio interface
 def update_model_choices():

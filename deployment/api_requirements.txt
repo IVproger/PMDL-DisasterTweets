@@ -7,5 +7,6 @@ zenml
 scikit-learn
 nltk
 sentence_transformers
+transformers
 demoji
 catboost
